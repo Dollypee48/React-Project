@@ -4,16 +4,16 @@ import Logo from "../../assets/ProjectLogo.png";
 import { Search } from "../Sections/Search";
 import { CiSearch } from "react-icons/ci";
 import { DropdownLoggedOut, DropdownLoggedIn } from "../index";
+import { useCart } from "../../Context"
 import { FaGear } from "react-icons/fa6";
 import { FaCartArrowDown } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
-import {useCart} from "./../../Context"
 
 
 
 
 export const Header = () => {
-  const { cartList } = useCart
+  const { cartList } = useCart();
   const [darkMode, setDarkMode] = useState(JSON.parse(localStorage.getItem("darkMode")) || false);
   const [searchSection, setSearchSection] = useState(false);
   const [dropdown, setDropdown] = useState(false);
