@@ -4,7 +4,7 @@ import Logo from "../../assets/ProjectLogo.png";
 import { Search } from "../Sections/Search";
 import { CiSearch } from "react-icons/ci";
 import { DropdownLoggedOut, DropdownLoggedIn } from "../index";
-import { useCart } from "../../Context";
+import { useCart } from "../../Context"
 import { FaGear } from "react-icons/fa6";
 import { FaCartArrowDown } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
