@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import { cartReducer } from "../reducers";
+import { cartReducer } from "../reducers/CartReducer";
 
 const cartInitialState ={
     cartList: [],
@@ -31,7 +31,7 @@ export const CartProvider = ({children}) => {
 
         const updatedTotal = state.total - product.price;
 
-        
+
         dispatch({
             type: "REMOVE_FROM_CART",
             payload: {
