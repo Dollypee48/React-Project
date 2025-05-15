@@ -1,4 +1,4 @@
-export { DropdownLoggedIn } from "./Elements/DropDownLoggedIn";
+export { DropdownLoggedIn } from "./Elements/DropdownLoggedIn";
 
 export { ScrollToTop } from "./other/ScrollToTop";
 
