@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import { filterReducer } from "../Reducers/FilterReducer";
+import { filterReducer } from "../reducers";
 
 const filterInitialState= {
     productList: [],
@@ -31,7 +31,7 @@ export const FilterProvider = ({children}) => {
         if (state.sortBy === "lowtohigh") {
             return products.sort((a, b) => Number(a.price) - Number(b.price))
         }
-        if (state. sortBy === "hightolow"){
+        if (state.sortBy === "hightolow"){
             return products.sort((a,b)=> Number(b.price) - Number(a.price))
         }
         return products;

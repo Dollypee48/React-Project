@@ -1,10 +1,11 @@
 import { createContext, useContext, useReducer } from "react";
-import { cartReducer } from "../reducers/CartReducer";
+import { cartReducer } from "../reducers";
 
 const cartInitialState ={
     cartList: [],
     total: 0
 }
+
 
 const CartContext = createContext(cartInitialState)
 
@@ -30,7 +31,6 @@ export const CartProvider = ({children}) => {
         const updatedList = state.cartList.filter(item => item.id !== product.id);
 
         const updatedTotal = state.total - product.price;
-
 
         dispatch({
             type: "REMOVE_FROM_CART",
