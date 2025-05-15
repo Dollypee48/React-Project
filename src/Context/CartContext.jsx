@@ -1,57 +1,54 @@
 import { createContext, useContext, useReducer } from "react";
-import { cartReducer } from "../Reducers";
+import { cartReducer } from "../reducers";
 
-
-const cartInitialstate = {
+const cartInitialState ={
     cartList: [],
     total: 0
 }
 
-const CartContext = createContext(cartInitialstate)
+const CartContext = createContext(cartInitialState)
 
-export const CartProvider =({children}) => {
+export const CartProvider = ({children}) => {
+    const [state, dispatch] = useReducer(cartReducer, cartInitialState)
 
-    const [state, dispatch] = useReducer(cartReducer, cartInitialstate)
-
-
-    const addToCart = (product) => {
-        const updatedList = state.cartList.concat(product);
+    const addToCart = (product) =>{
+        const updatedList =state.cartList.concat(product);
         const updatedTotal = state.total + product.price
 
         dispatch ({
-            type: "Add_To_Cart",
+            type: "ADD_TO_CART",
             payload: {
                 products: updatedList,
                 total: updatedTotal
             }
-        })
-    }
+        });
+
+    };
 
     const removeFromCart = (product) => {
 
-        const updatedList = state.cartList.filter(item => item.id !== product.id)
+        const updatedList = state.cartList.filter(item => item.id !== product.id);
 
         const updatedTotal = state.total - product.price;
 
-
+        
         dispatch({
-            type: "Remove_From_Cart",
+            type: "REMOVE_FROM_CART",
             payload: {
                 products: updatedList,
                 total: updatedTotal
             }
         })
-    }
-
+    };
     const clearCart = () => {
         dispatch({
-            type: "Clear_Cart",
+            type: "CLEAR_CART",
             payload: {
-                products: [],
+                product: [],
                 total: 0
             }
         })
-    }
+    };
 
     const value = {
         cartList: state.cartList,
@@ -60,12 +57,13 @@ export const CartProvider =({children}) => {
         removeFromCart,
         clearCart
     }
-    return <CartContext.Provider value={value}>
-        {children}
+
+    return <CartContext.Provider value={ value }>
+            {children}
     </CartContext.Provider>
 }
 
 export const useCart = () => {
-    const context = useContext(CartContext)
+    const context = useContext(CartContext);
     return context
 }
