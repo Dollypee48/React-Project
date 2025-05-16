@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import {filterReducer} from "../reducers/FilterReducer"
+import {filterReducer} from "../FilterReducer/reducers"
 const filterInitialState= {
     productList: [],
     onlyInStock: false,
