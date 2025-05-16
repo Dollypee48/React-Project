@@ -26,6 +26,7 @@ export const FilterProvider = ({children}) => {
     const bestSeller = (products) => {
         return state.bestSellerOnly? products.filter(product => product.best_seller === true) : products
     }
+    
 
     const sort = (products) => {
         if (state.sortBy === "lowtohigh") {
