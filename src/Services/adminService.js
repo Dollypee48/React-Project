@@ -10,7 +10,7 @@ const handleResponse = async (response) => {
 
 const createEbook = async (ebookData) => {
     try {
-        const response = await fetch(`${api}/product/createEbook`, {
+        const response = await fetch(`${api}/ebook/createEbook`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -29,7 +29,7 @@ const createEbook = async (ebookData) => {
 
 const updateEbook = async (Id, ebookData) => {
     try {
-        const response = await fetch(`${api}/product/updateEbook/${Id}`, {
+        const response = await fetch(`${api}/ebook/updateEbook/${Id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
