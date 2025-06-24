@@ -1,9 +1,13 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useEffect } from "react";
 import { cartReducer } from "../reducers/CartReducer";
+import { getUserCart, addToCartAPI, removeFromCartAPI, clearCartAPI, checkLoggingStatus } from "../Services";
+import { toast } from "react-toastify";
+
 
 const cartInitialState ={
     cartList: [],
-    total: 0
+    total: 0,
+    loading: false
 }
 
 
@@ -12,8 +16,54 @@ const CartContext = createContext(cartInitialState)
 export const CartProvider = ({children}) => {
     const [state, dispatch] = useReducer(cartReducer, cartInitialState)
 
-    const addToCart = (product) =>{
-        const updatedList =state.cartList.concat(product);
+
+    const loadCart = async() => {
+           
+                try {
+                    dispatch({type: "SET_LOADING", payload: true});
+                    const cartData = await getUserCart();
+                    const total = cartData.cartList.reduce((sum, item) => sum + item.price, 0);
+                    dispatch({
+                        type: "LOAD_CART",
+                        payload: {
+                            products: cartData.cartList,
+                            total: total
+                        }
+                    })
+                } catch (error) {
+                    if(!error.message.includes("Cart not found")){
+                        console.error("Error loading cart:", error);
+                    }
+                }finally{
+                    dispatch({type: "SET_LOADING", payload: false});
+                }
+            }
+
+        useEffect(() => {
+            const init = async () => {
+                const status = await checkLoggingStatus();
+                if (status) {
+                    loadCart();
+                }else {
+                    dispatch({
+                        type: "CLEAR_CART",
+                        payload: {
+                            products: [],
+                            total: 0
+                        }
+                    })
+                }
+            }
+            init();
+        }, [])
+        
+        
+ 
+    const addToCart = async (product) =>{
+        try {
+            dispatch({type: "SET_LOADING", payload: true});
+            await addToCartAPI(product.id);
+            const updatedList =state.cartList.concat(product);
         const updatedTotal = state.total + product.price
 
         dispatch ({
@@ -23,12 +73,20 @@ export const CartProvider = ({children}) => {
                 total: updatedTotal
             }
         });
-
+            toast.success("Item added to cart")
+        } catch (error) {
+            toast.error(error.message || "Failed to add item to cart")
+        }finally {
+            dispatch({type: "SET_LOADING", payload: false});
+        }
     };
 
-    const removeFromCart = (product) => {
+    const removeFromCart = async (product) => {
 
-        const updatedList = state.cartList.filter(item => item.id !== product.id);
+       try {
+        dispatch({type: "SET_LOADING", payload: true});
+        await removeFromCartAPI(product.id);
+         const updatedList = state.cartList.filter(item => item.id !== product.id);
 
         const updatedTotal = state.total - product.price;
 
@@ -39,23 +97,55 @@ export const CartProvider = ({children}) => {
                 total: updatedTotal
             }
         })
+        toast.success("Item removed from cart")
+       } catch (error) {
+        toast.error(error.message || "Failed to remove item from cart")
+       } finally{
+        dispatch({type: "SET_LOADING", payload: false});
+       }
     };
-    const clearCart = () => {
-        dispatch({
+    const clearCart = async() => {
+
+       try {
+        dispatch({type: "SET_LOADING", payload: true});
+        await clearCartAPI();
+
+         dispatch({
             type: "CLEAR_CART",
             payload: {
                 product: [],
                 total: 0
             }
         })
+        toast.success("Cart cleared successfully")
+       } catch (error) {
+        toast.error(error.message || "Failed to clear cart")
+       }finally{
+        dispatch({type: "SET_LOADING", payload: false});
+       }
     };
+
+    const clearCartLocal = () => {
+        dispatch({
+            type: "CLEAR_CART",
+            payload: {
+                products: [],
+                total: 0
+            }
+        })
+    }
+
+    console.log(state)
 
     const value = {
         cartList: state.cartList,
         total: state.total,
+        loading: state.loading,
         addToCart,
         removeFromCart,
-        clearCart
+        clearCart,
+        clearCartLocal,
+        loadCart
     }
 
     return <CartContext.Provider value={ value }>

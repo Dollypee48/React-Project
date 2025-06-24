@@ -4,10 +4,11 @@ import Logo from "../../assets/ProjectLogo.png";
 import { Search } from "../Sections/Search";
 import { CiSearch } from "react-icons/ci";
 import { DropdownLoggedOut, DropdownLoggedIn } from "../index";
-import { useCart } from "../../context"
+import { useCart } from "../../Context"
 import { FaGear } from "react-icons/fa6";
 import { FaCartArrowDown } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
+import { checkLoggingStatus } from "../../Services";
 
 
 
@@ -17,8 +18,7 @@ export const Header = () => {
   const [darkMode, setDarkMode] = useState(JSON.parse(localStorage.getItem("darkMode")) || false);
   const [searchSection, setSearchSection] = useState(false);
   const [dropdown, setDropdown] = useState(false);
-  const token = JSON.parse(localStorage.getItem("token"));
-  
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(darkMode));
@@ -29,6 +29,18 @@ export const Header = () => {
       document.documentElement.classList.remove("dark");
     }
   }, [darkMode]);
+
+  useEffect(() => {
+   if (dropdown){
+     const isLoggedIn = async () => {
+     const status = await checkLoggingStatus()
+
+     setLoggedIn(status)
+    }
+
+    isLoggedIn()
+   }
+  }, [dropdown]);
 
   return (
     <header>      
@@ -48,13 +60,17 @@ export const Header = () => {
                   <Link to="/cart" className="text-gray-700 dark:text-white mr-5">
                     <span className="text-2xl bi bi-cart-fill relative">
                     <FaCartArrowDown />
-                      <span className="text-white text-sm absolute -top-1 left-2.5 bg-rose-500 px-1 rounded-full ">{cartList.length}</span>
+                     <span className="text-white text-sm absolute -top-1 left-2.5 bg-rose-500 px-1 rounded-full ">
+                {cartList?.length || 0}
+              </span>
                     </span>                    
                   </Link>
                   <span onClick={() => setDropdown(!dropdown)} className="bi bi-person-circle cursor-pointer text-2xl text-gray-700 dark:text-white">
                   <CgProfile />
                   </span>
-                  { dropdown && ( token ? <DropdownLoggedIn setDropdown={setDropdown} /> : <DropdownLoggedOut setDropdown={setDropdown} /> ) }
+                  { dropdown && ( loggedIn ? 
+                  <DropdownLoggedIn setDropdown={setDropdown} /> 
+                  : <DropdownLoggedOut setDropdown={setDropdown} /> ) }
               </div>
           </div>
       </nav>

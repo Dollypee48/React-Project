@@ -18,8 +18,11 @@ export const Register = () => {
                     email: event.target.email.value,
                     password: event.target.password.value
                 }
-                const data = await register(authDetail)
-                data.accessToken ? navigate("/products") : toast.error("No Token")
+               await register(authDetail)
+                
+                  navigate("/products")
+               
+    
             } catch (error) {
                 toast.error(error.message, {closeButton: true, position: "bottom-center"})
             }

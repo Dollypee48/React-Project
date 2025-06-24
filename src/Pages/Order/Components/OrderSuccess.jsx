@@ -2,8 +2,15 @@ import { BiCart, BiCheckCircle } from 'react-icons/bi'
 import { Link } from 'react-router-dom'
 
 
-const OrderSuccess = () => {
-    
+const OrderSuccess = ({orderData}) => {
+
+    const userName = orderData?.user?.name;
+const userEmail = orderData?.user?.email;
+const orderId = orderData?.orderId;
+const displayOrderId = typeof orderId === "string" ? orderId.slice(-8) : "N/A";
+const totalAmount = orderData?.amount_paid;
+const quantity = orderData?.quantity || 0;
+
   return (
     <section className='text-xl text-center max-w-4xl m-auto my-10 py-5 dark:text-slate-100 border dark:border-slate-700'>
       <div className='my-5'>
@@ -12,22 +19,27 @@ const OrderSuccess = () => {
         </p>
 
         <p>
-            Thank You Dollypee for the Successful Order!
+            Thank You {userName} for the Successful Order!
         </p>
         <p>
-            Your Order ID: 12kncvjhjhgbkv
+            Your Order ID: {displayOrderId}
         </p>
       </div>
 
       <div className='my-5'>
         <p>Your order is confirmed</p>
+         <p className='my-5'>
+            items Ordered: {quantity} | total amount: ${totalAmount}
+        </p>
 
         <p>
-            please check your email (dollypee@gmail.com) for the eBook
+            please check your email ({userEmail}) for the eBook{quantity > 1 ? `s` : ``} you ordered.
         </p>
+
         <p className='my-5'>
-            Payment ID: xghhf_hjhjhhefnme97
-        </p>
+           payment ID: {orderData?.paymentId || "N/A"}
+          </p>
+       
       </div>
 
       <Link

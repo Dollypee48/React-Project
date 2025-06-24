@@ -2,28 +2,70 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useCart } from '../../../Context'
+import { getUser, placeOrder} from '../../../Services'
 
 
 const Checkout = ({setCheckout}) => {
 
     const {cartList, total, clearCart} = useCart()
     const [user, setUser] = useState({});
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const userData = await getUser();
+                if(userData) {
+                    setUser(userData);
+                }   else {
+                    toast.error("Please login to place order.");
+                    setCheckout(false);
+                    navigate("/login");
+
+                }
+            } catch (error) {
+                toast.error("failed to load user data", error.message )
+                setCheckout(false);
+            }
+        }
+        fetchUser();
+    }, [setCheckout, navigate])
 
     async function handleOrderSubmit(event) {
         event.preventDefault()
+        setLoading(true);
 
-        const status = false
+        try {
+            const orderData = await placeOrder();
 
-        if(status){
-            clearCart()
+            await  clearCart();
 
-        navigate("/order-summary", {state: {status: status}})
-        }else {
-            navigate("/order-summary", {state: {status: status}})
-        }
+            toast.success("Order placed successfully!😎")
+            navigate("/order-summary", { 
+                state: {
+                    status: true,
+                    orderData: orderData,
+                    message: "payment successfully!😎"
+            }});
+        } catch (error) {
+            toast.error(error.message || "Failed to place order 😞");
+            navigate("/order-summary", { 
+                state: {
+                    status: false,
+                    orderData: orderData,
+                    message: "payment failed😞"
+            }});
 
+        }finally {
+            setLoading(false);
+            setCheckout(false);
+        }   
     }
+  
+       
+
+      
 
   return (
     <section>

@@ -11,7 +11,11 @@ const OrderPage = () => {
     const {state} = useLocation()
   return (
     <main>
-      {state.status ? <OrderSuccess/> : <OrderFail/> }
+    {state.status ? (
+      <OrderSuccess orderData={state.orderData} />
+    ) : (
+      <OrderFail message={state.message} />
+    )}
     </main>
   )
 }

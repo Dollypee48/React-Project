@@ -11,7 +11,7 @@ import { FaTrashAlt } from "react-icons/fa";
 
 const ProductDetails = () => {
 
-    const {cartList, addToCart, removeFromCart, clearCart} = useCart()
+    const {cartList, addToCart, removeFromCart} = useCart()
     const [inCart, setInCart] = useState(false)
     const [product, setProduct] = useState({})
     const {id} = useParams()

@@ -1,7 +1,7 @@
 export async function getProductList(searchTerm) {
     const api = import.meta.env.VITE_APP_DB_SERVER;
 
-    const response = await fetch(`${api}/products?name_like=${searchTerm? searchTerm : ""}`);
+    const response = await fetch(`${api}/ebook/getAllEbooks`);
 
     if (!response.ok){
         throw{message: response.statuseText, status: response.status};
@@ -21,7 +21,7 @@ export const getProduct = async (id) => {
     
     const api = import.meta.env.VITE_APP_DB_SERVER;
 
-    const response = await fetch(`${api}/products/${id}`)
+    const response = await fetch(`${api}/products/getProduct/${id}`);
 
     if (!response.ok){
         throw{

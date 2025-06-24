@@ -3,6 +3,7 @@ import { useTitle } from '../Hooks/useTitle'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { login } from '../Services'
+import { useCart } from '../Context'
 
 export const Login = () => {
 
@@ -10,6 +11,7 @@ export const Login = () => {
     const navigate = useNavigate();
     const email = useRef()
     const password = useRef()
+    const {loadCart} = useCart()
 
     const handleLogin = async(event) => {
         event.preventDefault()
@@ -19,8 +21,10 @@ export const Login = () => {
                 password: password.current.value
             }
 
-            const data = await login(authDetail)
-            data?.accessToken ? navigate("/products") : toast.error("No Token")
+             await login(authDetail)
+             
+              loadCart()
+             navigate("/products")
         } catch (error) {
             toast.error(error.message, {closeButton: true, position: "bottom-center"})
         }

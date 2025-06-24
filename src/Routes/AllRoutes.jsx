@@ -7,6 +7,8 @@ import { Login } from "../Pages/Login";
 import { Register } from "../Pages/Register";
 import OrderPage from "../Pages/Order/OrderPage";
 import Dashboardpage from "../Pages/Dashboard/Dashboardpage";
+import AdminProtectedRoutes from "./AdminProtectedRoutes";
+import AdminPage from "../Pages/Admin/AdminPage";
 
 export const AllRoutes = () => {
   return (
@@ -20,7 +22,8 @@ export const AllRoutes = () => {
         <Route path="register" element={<Register/>}/>
         <Route path="order-summary" element={<OrderPage/>}/>
         <Route path="dashboard" element={<Dashboardpage/>}/>
-
+        <Route path="admin" element={<AdminPage/>}/>
+      
       </Routes>
     </>
   )

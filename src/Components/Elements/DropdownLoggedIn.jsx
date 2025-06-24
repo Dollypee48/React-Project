@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { getUser, logout } from '../../Services';
 import { toast } from 'react-toastify';
+import { useCart } from '../../Context';
 
 
 export const DropdownLoggedIn = ({setDropdown}) => {
@@ -9,6 +10,7 @@ export const DropdownLoggedIn = ({setDropdown}) => {
   const navigate = useNavigate()
 
   const [user, setUser] = useState({});
+  const {clearCartLocal} = useCart()
 
   useEffect(() => {
 
@@ -26,7 +28,7 @@ export const DropdownLoggedIn = ({setDropdown}) => {
 
   const handleLogout = () => {
     logout()
-
+    clearCartLocal();
     setDropdown(false)
     navigate("/")
   }
