@@ -148,14 +148,13 @@ const AdminProductList = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex flex-col space-y-1">
-                                                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                                    product.in_stock 
-                                                        ? 'bg-green-100 text-green-800' 
+                                                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${product.inStock
+                                                        ? 'bg-green-100 text-green-800'
                                                         : 'bg-red-100 text-red-800'
-                                                }`}>
-                                                    {product.in_stock ? 'In Stock' : 'Out of Stock'}
+                                                    }`}>
+                                                    {product.inStock ? 'In Stock' : 'Out of Stock'}
                                                 </span>
-                                                {product.best_seller && (
+                                                {product.bestSeller && (
                                                     <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                                         Best Seller
                                                     </span>

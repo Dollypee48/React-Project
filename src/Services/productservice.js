@@ -21,7 +21,7 @@ export const getProduct = async (id) => {
     
     const api = import.meta.env.VITE_APP_DB_SERVER;
 
-    const response = await fetch(`${api}/products/getProduct/${id}`);
+    const response = await fetch(`${api}/ebook/singleEbook/${id}`);
 
     if (!response.ok){
         throw{

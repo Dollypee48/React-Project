@@ -21,10 +21,15 @@ export const Login = () => {
                 password: password.current.value
             }
 
-             await login(authDetail)
+            const data = await login(authDetail)
              
               loadCart()
-             navigate("/products")
+            
+              if(data.isAdmin){
+                navigate("/admin")
+              }else {
+                navigate("/products")
+              }
         } catch (error) {
             toast.error(error.message, {closeButton: true, position: "bottom-center"})
         }
